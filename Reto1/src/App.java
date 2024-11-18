@@ -16,12 +16,16 @@ public class App {
             "Gaseoso, Atmosfera de hidrogeno, helio y metano",
             "Rocoso, compuesto de hielo y roca"
     };
-
+    // feat: luisa Leon: agrego array consumo recursos a naves
     static String[] naves = { "Exploradora", "Recolectora", "Carga Pesada", "Velocidad Maxima" };
     static Double[] Velocidad = { 1000.0, 400.0, 200.0, 1500.0 };
+    static Double[] consumoDeCombustible ={0.5, 1.0, 2.0, 2.5};
+    static Double[] consumoDeOxigeno ={1.0, 1.0, 1.5, 2.0};
+
     static String planetaEscogido;
     static int seleccionPlaneta;
     static String naveElegida;
+    static int pasajeros;
 
 
     public static void main(String[] args) throws Exception {
@@ -30,7 +34,7 @@ public class App {
         do {
             mostrarMenu();
             opcion = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine();
             switch (opcion) {
                 case 1:
                     planetaEscogido = seleccionarPlaneta(planetas,scanner);
@@ -40,18 +44,20 @@ public class App {
                     break;
                 case 3:
                    // docs: Nathalia Bravo, llamo la funcion iniciar la simulacion del viaje por seleccionar pasajeros
-                    iniciarVijae();
+                    iniciarViaje();
                     break;
                 case 4:
+                System.out.println("programa finalizado con exito!");
                     break;
+                //fix: Luisa Leon: Se agrega caso 4 por menu
+            
                 default:
                 System.out.println("Debe elegir una opcion entre 1 y 4.");
                     break;
             }
 
         } while (opcion != 4);
-        System.out.println("¿Programa finalizado con exito!");
-    }
+        }
 
     public static void mostrarMenu() {
         //fea: Nathalia Bravo, creacion del menu
@@ -67,22 +73,24 @@ public class App {
         //feat: Nathalia Bravo, agrego la funcion seleccionar el planeta
         System.out.println("Los planetas disponibles son: ");
         for (int i = 0; i < planetas.length; i++) {
-            System.out.print( (i+1 ) + "." + planetas[i]+ " " + "\n"); // Mostrar lista de planetas 
+            System.out.print( (i+1 ) + "." + planetas[i] + " " + "\n" );
         }
         System.out.println();
         //Eleccion de planeta
         System.out.println("Elige tu planeta, introduce un numero entre (1 - 8) \n");
-             seleccionPlaneta = scanner.nextInt();
+            seleccionPlaneta = scanner.nextInt();
             if (seleccionPlaneta > 0 && seleccionPlaneta <= planetas.length) {
                 planetaEscogido = planetas[seleccionPlaneta-1];
                 System.out.println("Planeta escogido: " + planetaEscogido);
-                detalles(composicion);// llama la funcion que muestra los detalles del planeta
+                detalles(composicion);
+                seleccionarPasajeros();//fix: se agrega variable pasajero1
+
+
             } else{
                 System.out.println("Debe escoger una opcion entre 1 y 8.");
                 seleccionarPlaneta(planetas, escanner);
             }
-           //docs: Nathalia Bravo, llamo la funcion seleccionarPasajeros();
-            seleccionarPasajeros();
+            
             return planetaEscogido;
     }
 
@@ -90,52 +98,102 @@ public class App {
         //feat: Nahalia Bravo, agrego la funcion seleccionar nave
         System.out.println("Las naves disponibles para su viaje a "+ planetaEscogido + " son: " );
         for (int i = 0; i < naves.length; i++) {
-            System.out.print( (i+1 ) + "." + naves[i]+ " " + "\n");  // Mostrar lista de naves
+            System.out.print( (i+1 ) + "." + naves[i] + " " + "\n" ); //fix: Luisa Leon: se quita el espacio (se deja como comentario) " " + "\n"// Mostrar lista de naves
         }
-        System.out.println();
+        //fix Luisa leon: se elimina sout (se deja comentario) System.out.println();
         //Eleccion de nave
-        System.out.println("Elige una nave, introduce un numero entre 1 y 4 \n");
-        int seleccion = scanner.nextInt();
-        if (seleccion >= 0 && seleccion <= naves.length) {
-            naveElegida = naves[seleccion-1];
-            System.out.println("La nave escogida es: " + naveElegida);
-        }else{
-            System.out.println("Debe escoger una opcion entre 1 y 4.");
-            seleccionarNave(naves, scanner);
+        //feat: se realiza nueva variable
+        int seleccion = 0;
+        boolean entradaValida = false;
+        // feat: se agrega un while
+        while (!entradaValida) {
+            System.out.println("Elige una nave, introduce un numero entre 1 y 4 \n");
+            if (scanner.hasNextInt()) {
+                seleccion=scanner.nextInt();
+                if (seleccion > 0 && seleccion <=naves.length) {
+                    entradaValida = true;
+                    
+                } else {
+                    System.out.println("Debe escoger una opcion entre 1 y 4.");
+                }
+        }else {
+                System.out.println("entrada invalida, introduzca un numero entero. ");
+                scanner.next();
         }
-        seleccionarRecursos(); // docs: Nathalia bravo llamo la funcion desde el metodo selecionar nave
+        }
+        naveElegida=naves[seleccion-1];
+        System.out.println("la nave escogida es: " + naveElegida);
         return naveElegida;
+        }
+
+
+     //feat: Luisa Leon se agrega iniciar viaje
+    public static void iniciarViaje(){
+        System.out.println("Iniciando simulacion de viaje...");
+        if (planetaEscogido == null || naveElegida == null){
+            System.out.println("error: no ha seleccionado planeta o nave. ");
+        return;
+        }
+        calcularRecursos();
+        System.out.println("el viaje a " + planetaEscogido + "ha comenzado!");
+
     }
-
-
-    public static void iniciarVijae(){
-
-    }
-
-    public static void seleccionarRecursos() {
-
-    }
-
-    // metodos auxiliares
     public static void seleccionarPasajeros() {
         boolean entradaValida = false;
         while (!entradaValida) {
             System.out.println("Por favor, ingrese la cantidad de pasajeros: ");
             if (scanner.hasNextInt()) {
-                int cantidadPasajeros = scanner.nextInt();
+                double cantidadPasajeros = scanner.nextDouble();
                 if (cantidadPasajeros > 0) {
                     entradaValida = true;
-                    System.out.print("la cantidad de pasajeros es: " + cantidadPasajeros + "\n"); 
+                    System.out.print("la cantidad de pasajeros es: " + cantidadPasajeros + "\n");
                 } else {
                     System.out.println("el numero ingresado debe ser un numero positivo");
                 }
             } else {
-                System.out.println("el numero ingresado debe ser un numero entero");
                 scanner.next();
 
             }
         }
+        }
+    //feat:Luisa Leon se agrega calcular recursos
+
+    public static void calcularRecursos() {
+        double DistanciaViaje = distancia [seleccionPlaneta- 1];
+        int indiceNave = java.util.Arrays.asList(naves).indexOf(naveElegida);
+        Double combustibleNecesario = DistanciaViaje * pasajeros *consumoDeCombustible [indiceNave];
+        Double oxigenoNecesario = DistanciaViaje * pasajeros * consumoDeOxigeno [indiceNave];
+        
+        System.out.println("recursos necesarios:");
+        System.out.println("indice: " + indiceNave);
+        System.out.println("distancia: "+ DistanciaViaje );
+        System.out.println("combustible: "+ combustibleNecesario + "Litros");
+        System.out.println("oxigeno: " + oxigenoNecesario + "Litros");
+        
+    if(planetaEscogido==null||naveElegida == null){
+        System.out.println("elija un planeta y una nave primero");
+    return;
     }
+    }
+    //feat:luisa Leon seleccionar recursos
+
+    public static void seleccionarRecursos (){
+        System.out.println("por favor, seleccione los recursos dsiponibles: ");
+
+        System.out.println("ingrese el combustible:  ");
+        Double combustibleDisponible = scanner.nextDouble ();
+
+        System.out.println("ingrese el oxigeno:  ");
+        Double oxigenoDisponible = scanner.nextDouble ();
+
+        System.out.println("\n Cluclando los recursos necesarios para el viaje...  ");
+
+    }
+
+    
+    // metodos auxiliares
+    
+    
 
     public static void detalles(String[] composicion) {
         // feat: Nathalia Bravo, Agrego la funcion de mostrar la descripcion del planeta escogido
