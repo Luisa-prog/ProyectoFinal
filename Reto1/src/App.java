@@ -19,8 +19,8 @@ public class App {
     // feat: luisa Leon: agrego array consumo recursos a naves
     static String[] naves = { "Exploradora", "Recolectora", "Carga Pesada", "Velocidad Maxima" };
     static Double[] Velocidad = { 1000.0, 400.0, 200.0, 1500.0 };
-    static Double[] consumoDeCombustible ={0.5, 1.0, 2.0, 2.5};
-    static Double[] consumoDeOxigeno ={1.0, 1.0, 1.5, 2.0};
+    static Double[] consumoDeCombustible ={ 0.05 , 0.1 , 0.2 , 0.3};
+    static Double[] consumoDeOxigeno ={ 0.1 , 0.15 , 0.20, 0.25};
 
     static String planetaEscogido;
     static int seleccionPlaneta;
@@ -29,7 +29,7 @@ public class App {
 
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Bienvenido a su viaje interplanetario");
+            System.out.println("Bienvenido a su viaje interplanetario");
         int opcion;
         do {
             mostrarMenu();
@@ -71,17 +71,17 @@ public class App {
 
     public static String seleccionarPlaneta(String[] planetas, Scanner escanner) {
         //feat: Nathalia Bravo, agrego la funcion seleccionar el planeta
-        System.out.println("Los planetas disponibles son: ");
+            System.out.println("Los planetas disponibles son: ");
         for (int i = 0; i < planetas.length; i++) {
             System.out.print( (i+1 ) + "." + planetas[i] + " " + "\n" );
         }
-        System.out.println();
+            System.out.println();
         //Eleccion de planeta
-        System.out.println("Elige tu planeta, introduce un numero entre (1 - 8) \n");
+            System.out.println("Elige tu planeta, introduce un numero entre (1 - 8) \n");
             seleccionPlaneta = scanner.nextInt();
-            if (seleccionPlaneta > 0 && seleccionPlaneta <= planetas.length) {
-                planetaEscogido = planetas[seleccionPlaneta-1];
-                System.out.println("Planeta escogido: " + planetaEscogido);
+        if (seleccionPlaneta > 0 && seleccionPlaneta <= planetas.length) {
+            planetaEscogido = planetas[seleccionPlaneta-1];
+            System.out.println("Planeta escogido: " + planetaEscogido);
                 detalles(composicion);
                 seleccionarPasajeros();//fix: se agrega variable pasajero1
 
@@ -113,16 +113,16 @@ public class App {
                 if (seleccion > 0 && seleccion <=naves.length) {
                     entradaValida = true;
                     
-                } else {
+            } else {
                     System.out.println("Debe escoger una opcion entre 1 y 4.");
                 }
-        }else {
+            }else {
                 System.out.println("entrada invalida, introduzca un numero entero. ");
                 scanner.next();
-        }
-        }
-        naveElegida=naves[seleccion-1];
-        System.out.println("la nave escogida es: " + naveElegida);
+                }
+            }
+            naveElegida=naves[seleccion-1];
+                    System.out.println("la nave escogida es: " + naveElegida);
         return naveElegida;
         }
 
@@ -135,26 +135,29 @@ public class App {
         return;
         }
         calcularRecursos();
-        System.out.println("el viaje a " + planetaEscogido + "ha comenzado!");
-
+        calcularViaje(); //feat: Luisa Leon se agrega funcion
+        seleccionarRecursos(seleccionPlaneta, pasajeros); //fiat: Luisa Leon se agrega funcion
+        System.out.println("el viaje a " + planetaEscogido + " ha comenzado!");
+        System.exit(0); // Feat: Luisa Leon cierre de ciclo
     }
+
+
     public static void seleccionarPasajeros() {
         boolean entradaValida = false;
         while (!entradaValida) {
             System.out.println("Por favor, ingrese la cantidad de pasajeros: ");
             if (scanner.hasNextInt()) {
-                double cantidadPasajeros = scanner.nextDouble();
-                if (cantidadPasajeros > 0) {
+                pasajeros = scanner.nextInt();
+                if (pasajeros > 0) {
                     entradaValida = true;
-                    System.out.print("la cantidad de pasajeros es: " + cantidadPasajeros + "\n");
+                    System.out.print("la cantidad de pasajeros es: " + pasajeros + "\n");
                 } else {
                     System.out.println("el numero ingresado debe ser un numero positivo");
                 }
             } else {
                 scanner.next();
-
             }
-        }
+            }
         }
     //feat:Luisa Leon se agrega calcular recursos
 
@@ -164,11 +167,13 @@ public class App {
         Double combustibleNecesario = DistanciaViaje * pasajeros *consumoDeCombustible [indiceNave];
         Double oxigenoNecesario = DistanciaViaje * pasajeros * consumoDeOxigeno [indiceNave];
         
-        System.out.println("recursos necesarios:");
-        System.out.println("indice: " + indiceNave);
-        System.out.println("distancia: "+ DistanciaViaje );
-        System.out.println("combustible: "+ combustibleNecesario + "Litros");
-        System.out.println("oxigeno: " + oxigenoNecesario + "Litros");
+            System.out.println("recursos necesarios:");
+            System.out.println("_____________________");
+            System.out.println("indice: " + indiceNave);
+            System.out.println("distancia: "+ DistanciaViaje );
+            System.out.println("_____________________");
+            System.out.println("combustible: "+ combustibleNecesario + "Litros");
+            System.out.println("oxigeno: " + oxigenoNecesario + "Litros");
         
     if(planetaEscogido==null||naveElegida == null){
         System.out.println("elija un planeta y una nave primero");
@@ -176,25 +181,33 @@ public class App {
     }
     }
     //feat:luisa Leon seleccionar recursos
+    //fix: Luisa Leon se corrige la funcion de seleccionnar recursos
 
-    public static void seleccionarRecursos (){
-        System.out.println("por favor, seleccione los recursos dsiponibles: ");
-
-        System.out.println("ingrese el combustible:  ");
+    public static void seleccionarRecursos (double combustibleNecesario, double oxigenoNecesario){
+        System.out.println("\npor favor, introduzca los recursos disponibles: ");
+        System.out.println("_____________________");
+        System.out.println("ingrese el combustible disponible:  ");
         Double combustibleDisponible = scanner.nextDouble ();
 
-        System.out.println("ingrese el oxigeno:  ");
-        Double oxigenoDisponible = scanner.nextDouble ();
-
-        System.out.println("\n Cluclando los recursos necesarios para el viaje...  ");
-
-    }
+        System.out.println("ingrese el oxigeno disponible:  ");
+        Double oxigenoDisponible = scanner.nextDouble();
+        System.out.println("_____________________");
+        if(combustibleDisponible >= combustibleNecesario && oxigenoDisponible >= oxigenoNecesario){
+        System.out.println("los recursos son suficientes para el viaje");
+            }else{
+            System.out.println("\nLos recursos son insuficientes. ajuste necesario: ");
+                if (combustibleDisponible < combustibleNecesario){
+                System.out.println("debe aumentar el combustible ");
+                }
+                    if (oxigenoDisponible < oxigenoNecesario){
+                    System.out.println("debe aumentar el oxigeno ");
+                    }
+                }
+        }
 
     
     // metodos auxiliares
     
-    
-
     public static void detalles(String[] composicion) {
         // feat: Nathalia Bravo, Agrego la funcion de mostrar la descripcion del planeta escogido
         String detallePlaneta="";
@@ -204,10 +217,15 @@ public class App {
             }
         }
         System.out.println(planetaEscogido + " es un planeta " + detallePlaneta +"\n ");
-
     }
 
-    public static void eventosAleatorios(String[] arreglo) {
+    //feat: Luisa Leon se agrega una nueva funcion
+    public static void calcularViaje() {
+        if(planetaEscogido==null || naveElegida==null){
+            System.out.println("primero debe elegir un planeta y nave");
+        }
+        double durancionHoras = distancia / Velocidad ;
+        double duraciondi
 
     }
 }
