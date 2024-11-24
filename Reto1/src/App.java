@@ -148,8 +148,7 @@ public class App {
         }
         naveElegida = naves[seleccion - 1];
         System.out.println("La nave escogida es: " + naveElegida + "\n");
-        calcularRecursos();
-        seleccionarRecursos();
+
         System.out.println("\n Ahora debes escojer la opcion de iniciar viaje. ");
         return naveElegida;
         
@@ -162,8 +161,8 @@ public class App {
             System.out.println("Error: no ha seleccionado planeta o nave. ");
             return;
         }
-        //calcularRecursos(); fix: Nathalia, llamo las funciones desde la funcion seleccionar nave
-        //calcularViaje(); // feat: Luisa Leon se agrega funcion
+        calcularRecursos(); 
+        calcularViaje(); // feat: Luisa Leon se agrega funcion
         //seleccionarRecursos(); // fiat: Luisa Leon se agrega funcion
         System.out.println("El viaje a " + planetaEscogido + " ha comenzado! \n");
         seleccionEventoAleatorio();
