@@ -1,9 +1,11 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class App {
 
     static Scanner scanner = new Scanner(System.in);
-    static String[] planetas = { "Mercurio.", "Venus.", "Marte.", "Jupiter.", "Saturno.", "Urano.", "Neptuno.", "Pluton." };
+    static String[] planetas = { "Mercurio.", "Venus.", "Marte.", "Jupiter.", "Saturno.", "Urano.", "Neptuno.",
+            "Pluton." };
     static Double[] distancias = { 91.69, 41.4, 78.34, 628.73, 1275.0, 2723.0, 4351.0, 5906.0 };
     // se realiza la composicion y detalle de cada planeta
     static String[] composicion = {
@@ -22,13 +24,26 @@ public class App {
     static Double[] consumoDeCombustible = { 0.05, 0.1, 0.2, 0.3 };
     static Double[] consumoDeOxigeno = { 0.1, 0.15, 0.20, 0.25 };
 
+    // feat: Nathalia agrega array con eventos aleatorios
+    static String[] eventos = {
+            "Lluvia de meteoritos.",
+            "Fallo el sistema de propulsion. ",
+            "Desvio del planeta destino.",
+            "Tormenta de polvo.",
+            "Agujero negro.",
+    };
+
     static String planetaEscogido;
     static int seleccionPlaneta;
     static String naveElegida;
     static int pasajeros;
-    static double DistanciaViaje;
+    static double DistanciaPlaneta;
     static Double combustibleNecesario;
     static Double oxigenoNecesario;
+    static Double combustibleDisponible;
+    static Double oxigenoDisponible;
+    static Random random = new Random();
+    static String eventoAleatorio;
 
     public static void main(String[] args) throws Exception {
         System.out.println("#########################################");
@@ -132,22 +147,26 @@ public class App {
             }
         }
         naveElegida = naves[seleccion - 1];
-        System.out.println("la nave escogida es: " + naveElegida);
+        System.out.println("La nave escogida es: " + naveElegida + "\n");
+        calcularRecursos();
+        seleccionarRecursos();
         System.out.println("\n Ahora debes escojer la opcion de iniciar viaje. ");
         return naveElegida;
+        
     }
 
     // feat: Luisa Leon se agrega iniciar viaje
     public static void iniciarViaje() {
-        System.out.println("Iniciando simulacion de viaje...");
+        System.out.println("Iniciando simulacion de viaje... \n ");
         if (planetaEscogido == null || naveElegida == null) {
-            System.out.println("error: no ha seleccionado planeta o nave. ");
+            System.out.println("Error: no ha seleccionado planeta o nave. ");
             return;
         }
-        calcularRecursos();
-        calcularViaje(); // feat: Luisa Leon se agrega funcion
-        seleccionarRecursos(); // fiat: Luisa Leon se agrega funcion
-        System.out.println("el viaje a " + planetaEscogido + " ha comenzado!");
+        //calcularRecursos(); fix: Nathalia, llamo las funciones desde la funcion seleccionar nave
+        //calcularViaje(); // feat: Luisa Leon se agrega funcion
+        //seleccionarRecursos(); // fiat: Luisa Leon se agrega funcion
+        System.out.println("El viaje a " + planetaEscogido + " ha comenzado! \n");
+        seleccionEventoAleatorio();
         System.exit(0); // Feat: Luisa Leon cierre de ciclo
     }
 
@@ -173,15 +192,15 @@ public class App {
     // feat:Luisa Leon se agrega calcular recursos
 
     public static void calcularRecursos() {
-        DistanciaViaje = distancias[seleccionPlaneta - 1];
+        DistanciaPlaneta = distancias[seleccionPlaneta - 1];
         int indiceNave = java.util.Arrays.asList(naves).indexOf(naveElegida);
-         combustibleNecesario = DistanciaViaje * pasajeros * consumoDeCombustible[indiceNave];
-         oxigenoNecesario = DistanciaViaje * pasajeros * consumoDeOxigeno[indiceNave];
+        combustibleNecesario = DistanciaPlaneta * pasajeros * consumoDeCombustible[indiceNave];
+        oxigenoNecesario = DistanciaPlaneta * pasajeros * consumoDeOxigeno[indiceNave];
 
-        System.out.println("Recursos necesarios:");
+        System.out.println("Recursos necesarios de viaje:");
         System.out.println("_____________________");
-        //fix: Nathalia borra mostrar indice y distancia
-       
+        // fix: Nathalia borra mostrar indice y distancia
+
         System.out.println("_____________________");
         System.out.println("Combustible Necesario: " + combustibleNecesario + " Litros");
         System.out.println("Oxigeno Necesario: " + oxigenoNecesario + " Litros");
@@ -198,14 +217,14 @@ public class App {
         System.out.println("\nPor favor, introduzca los recursos disponibles: ");
         System.out.println("_____________________");
         System.out.println("Ingrese el combustible disponible:  ");
-        Double combustibleDisponible = scanner.nextDouble();
+        combustibleDisponible = scanner.nextDouble();
 
         System.out.println("Ingrese el oxigeno disponible:  ");
-        Double oxigenoDisponible = scanner.nextDouble();
+        oxigenoDisponible = scanner.nextDouble();
         System.out.println("_____________________");
         if (combustibleDisponible >= combustibleNecesario && oxigenoDisponible >= oxigenoNecesario) {
             System.out.println("Los recursos son suficientes para el viaje");
-        } else  {
+        } else {
             System.out.println("\nLos recursos son insuficientes, Ingrese los datos nuevamente ");
 
             if (combustibleDisponible < combustibleNecesario) {
@@ -236,17 +255,17 @@ public class App {
         }
         System.out.println(planetaEscogido + " es un planeta " + detallePlaneta + " Con una distancia de " + distancia
                 + " kilometros.\n ");
-               
+
     }
 
     // feat: Luisa Leon se agrega una nueva funcion
+    // fix: Nathalia ajusta la funcion calcular viaje
     public static void calcularViaje() {
         if (planetaEscogido == null || naveElegida == null) {
             System.out.println("Primero debe elegir un planeta y nave");
         }
-        double duracionHoras = DistanciaViaje / Velocidades[0];
+        double duracionHoras = DistanciaPlaneta / Velocidades[0];
         System.out.println("Duracion horas " + duracionHoras);
-
     }
 
     public static void imprimirInfoPlanetas() {
@@ -260,4 +279,81 @@ public class App {
 
         System.out.println("Ahora debes escoger tu planeta destino. \n");
     }
+
+    public static void seleccionEventoAleatorio() {
+        System.out.println("¡¡¡UN EVENTO EXTRAORDINARIO HA OCURRIDO!!! \n ");
+        int indiceEvento = random.nextInt(eventos.length);
+        eventoAleatorio = eventos[indiceEvento];
+
+        switch (indiceEvento) {
+            case 0:
+                System.out.println("La " + eventoAleatorio + " esta afectando el combistible");
+                combustibleDisponible -= 50;
+                System.out.println("Queda disponible " + combustibleDisponible
+                        + " litros y se necesita " + combustibleNecesario + " litros");
+                System.out.println("Debe aumentar el combustible ");
+                combustibleDisponible += scanner.nextDouble();
+                if (combustibleDisponible > combustibleNecesario) {
+                    System.out.println("Problema resuelto, siga su viaje.");
+                }else{
+                    System.out.println("Se agoto el combustible, no se pudo llegar al destino ");
+                }
+                break;
+
+            case 1:
+                System.out.println( eventoAleatorio + " Puede haber una pérdida de potencia, se necesita mas combustible, ");
+                combustibleDisponible -= 50;
+                System.out.println("Debe aumentar el combustible queda " + combustibleDisponible + 
+                " litros y se necesita " +  combustibleNecesario);
+                combustibleDisponible += scanner.nextDouble();
+                if (combustibleDisponible > combustibleNecesario) {
+                    System.out.println("Problema resuelto, siga su viaje.");
+                }else {
+                    System.out.println("Se agoto el combustible, no se pudo llegar al destino ");
+                }
+                break;
+
+            case 2:
+                System.out.println(eventoAleatorio + " Avisar a la torre de control, pulse 1 para confirmar ");
+                 int confirmacion = scanner.nextInt();
+                 if (confirmacion == 1 ) {
+                    System.out.println("Problema resuelto, siga su viaje.");
+                 }else{
+                    System.out.println("Su nave de dirige a la tierra nuevamente, no se pudo llegar a su destino");
+                 }
+                break;
+
+            case 3:
+                System.out.println("La " + eventoAleatorio + 
+                " esta afectando la vision de la nave, debe activar los ventiladores, presione 1 para confirmar ");
+                confirmacion = scanner.nextInt();
+                System.out.println("Debe aumentar el oxigeno, se agota, oxigeno disponible: " + (oxigenoDisponible - 30) + 
+                " litros. y se necesita " + oxigenoNecesario + " litros.");
+                oxigenoDisponible += scanner.nextDouble();
+                if (confirmacion == 1 & oxigenoDisponible > oxigenoNecesario) {
+                    System.out.println("Problema resuelto, siga su viaje.");
+                 }else if (oxigenoDisponible < oxigenoNecesario) {
+                    System.out.println("Su nave se quedo sin oxigeno, no se puedo completar el viaje");
+                 } else{
+                    System.out.println("Su nave no tiene visibilidad, se perdio el rumbo y quedo a la deriva");
+                 }
+                
+                if (oxigenoDisponible < oxigenoNecesario) {
+                    System.out.println("Se agoto el oxigeno, no se pudo llegar al destino ");
+                }
+                break;
+
+            case 4:
+                System.out.println("Peligro!!  " + eventoAleatorio + " Cambiar direccion de la nave y activar modo potencia, presione 1 ");
+                confirmacion = scanner.nextInt();
+                if (confirmacion == 1) {
+                    System.out.println("Problema resuelto, siga su viaje.");
+                }
+
+                break;
+           
+        }
+
+    }
+
 }
