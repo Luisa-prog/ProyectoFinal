@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -48,9 +49,9 @@ public class App {
     static int seleccion;
 
     public static void main(String[] args) throws Exception {
-        System.out.println("#########################################");
+        System.out.println("╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣");
         System.out.println(" Bienvenido a su viaje interplanetario ");
-        System.out.println("#########################################");
+        System.out.println("╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣╣");
         int opcion;
         do {
             mostrarMenu();
@@ -86,7 +87,7 @@ public class App {
 
     public static void mostrarMenu() {
         // fea: Nathalia Bravo, creacion del menu
-        System.out.println("\n ---------Menu Principal----------");
+        System.out.println("\n ------ MENU PRINCIPAL--------");
         System.out.println("1.Imprimir informacion de planetas");
         System.out.println("2.Seleccionar un planeta de destino.");
         System.out.println("3.Seleccionar una nave espacial.");
@@ -165,9 +166,11 @@ public class App {
         }
         calcularRecursos();
         calcularViaje();// feat: Luisa Leon se agrega funcion
-        seleccionarRecursos(); // feat: Luisa Leon se agrega funcion
-        System.out.println("El viaje a " + planetaEscogido + " ha comenzado! \n");
-        seleccionEventoAleatorio();
+        seleccionarRecursos();
+        realizarSimulacion(); // feat: Luisa Leon se agrega funcion
+        
+    
+        
         System.exit(0); // Feat: Luisa Leon cierre de ciclo
     }
 
@@ -269,8 +272,53 @@ public class App {
         double dias = duracionHoras /24;
         double diascompletos=Math.round(dias);
         System.out.println("Duracion del viaje:  " + diascompletos +" dias.");
-      
+        
     }
+
+    public static void realizarSimulacion() {
+        double duracionHoras = DistanciaPlaneta / Velocidades[seleccion -1];
+        int diasCompletos = (int) Math.ceil( duracionHoras /24 );
+        int eventosOcurridos = 0;
+        for (int dia =1; dia <= diasCompletos; dia++) {
+            double progreso = (double) dia / diasCompletos * 100;
+            if (dia ==1){
+                System.out.println("Dia " + dia + ": Inicio del viaje");
+                
+            }else if (dia == diasCompletos /2) {
+                    System.out.println( "Dia " + dia + ": Mitad del viaje");
+
+                } else if (dia  == diasCompletos){
+                    System.out.println( "dias " + dia + ": LLeegada al destino");
+
+                }
+                if (eventosOcurridos < 2 && random.nextInt(diasCompletos)==dia -1){
+                    seleccionEventoAleatorio();
+                    eventosOcurridos++;
+                }
+                mostrarBarra(progreso);
+                try {
+                    Thread.sleep(200); //pausa para visualizar barra
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+
+                }
+            }
+            System.out.println("______________________________");
+
+            System.out.println("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒");
+            System.out.println("\n ¡¡¡ viaje completado!!!");
+
+            System.out.println("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒");
+        }
+        public static void mostrarBarra(double progreso) {
+            int longitudBarra =50;
+            int completado = (int) (longitudBarra * progreso /100);
+            int restante = longitudBarra -  completado;
+
+            String barra = "[" + "▄".repeat(completado) + " ".repeat(restante) + "]";
+            System.out.println("\r" + barra + " " + String.format("%.2f", progreso) + "%");
+
+        }
 
     public static void imprimirInfoPlanetas() {
         // feat: Nathalia Bravo, Agrego la funcion de mostrar info de todos los planetas
