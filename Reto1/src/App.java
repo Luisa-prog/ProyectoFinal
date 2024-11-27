@@ -351,6 +351,7 @@ public class App {
                     System.out.println("Problema resuelto, siga su viaje.");
                 } else {
                     System.out.println("Se agoto el combustible, no se pudo llegar al destino. ");
+                    System.exit(0);
                 }
                 break;
 
@@ -368,6 +369,7 @@ public class App {
                     System.out.println("Problema resuelto, siga su viaje.");
                 } else {
                     System.out.println("Se agoto el combustible, no se pudo llegar al destino. ");
+                    System.exit(0);
                 }
                 break;
 
@@ -378,6 +380,7 @@ public class App {
                     System.out.println("Problema resuelto, siga su viaje.");
                 } else {
                     System.out.println("Su nave de dirige a la tierra nuevamente, no se pudo llegar a su destino.");
+                    System.exit(0);
                 }
                 break;
 
@@ -398,9 +401,11 @@ public class App {
                     System.out.println("Su nave se quedo sin oxigeno, no se puedo completar el viaje.");
                 } else {
                     System.out.println("Su nave no tiene visibilidad, se perdio el rumbo y quedo a la deriva.");
+                    System.exit(0);
                 }
                 if (oxigenoDisponible < oxigenoNecesario) {
                     System.out.println("Se agoto el oxigeno, no se pudo llegar al destino. ");
+                    System.exit(0);
                 }
                 break;
 
@@ -412,6 +417,7 @@ public class App {
                     System.out.println("Problema resuelto, siga su viaje.");
                 } else {
                     System.out.println("Su nave se perdio en el agujeo negro.");
+                    System.exit(0);
                 }
 
                 break;
