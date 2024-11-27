@@ -126,16 +126,17 @@ public class App {
     }
 
     public static String seleccionarNave(String[] naves, Scanner scanner) {
-        // se agrego la funcion seleccionar nave
+        // feat: Nahalia Bravo, agrego la funcion seleccionar nave
         System.out.println("Las naves disponibles para su viaje a " + planetaEscogido + " son: ");
         for (int i = 0; i < naves.length; i++) {
             System.out.print((i + 1) + "." + naves[i] + ", Su velocidad es : "+ Velocidades[i]  + " KM/H  "+ "\n"); 
-        // Eleccion de nave
-        // se realiza nueva variable
+                                                                  
+        }
+       
         seleccion = 0;
         boolean entradaValida = false;
-        // se agrega un while para la eleccion de nave
-        while (!entradaValida) { 
+        // feat: se agrega un while
+        while (!entradaValida) {
             System.out.println("Elige una nave, introduce un numero entre 1 y 4 \n");
             if (scanner.hasNextInt()) {
                 seleccion = scanner.nextInt();
