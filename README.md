@@ -1,3 +1,8 @@
+
+Nathalia Bravo
+Luisa Fernanda Leon Campos 
+
+
 # Simulador de Viaje Interplanetario 🚀
 
 Este proyecto es un simulador de viaje interplanetario desarrollado en Java. Permite a los usuarios seleccionar un planeta de destino, elegir una nave espacial, calcular los recursos necesarios para el viaje y realizar una simulación con eventos aleatorios que pueden ocurrir durante el trayecto.
