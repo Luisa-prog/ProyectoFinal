@@ -2,6 +2,9 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
+//Nathalia BRavo
+//Luisa Fernanda Leon
+
 public class App {
 
     static Scanner scanner = new Scanner(System.in);
